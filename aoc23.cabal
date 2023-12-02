@@ -64,12 +64,12 @@ library aoc23-lib
     other-modules:    Llib
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.16.0.0, text, vector, extra
+    build-depends:    base ^>=4.16.0.0, text, vector, extra, regex-applicative
 
     -- Directories containing source files.
     hs-source-dirs:   lib
 
-    exposed-modules:  Day01
+    exposed-modules:  Day01, Day02
 
     -- Base language which the package is written in.
     default-language: Haskell2010
@@ -77,6 +77,12 @@ library aoc23-lib
 
 executable day01
     main-is: Run01.hs
+    build-depends: base, aoc23-lib
+    hs-source-dirs: execs
+    default-language: Haskell2010
+
+executable day02
+    main-is: Run02.hs
     build-depends: base, aoc23-lib
     hs-source-dirs: execs
     default-language: Haskell2010
