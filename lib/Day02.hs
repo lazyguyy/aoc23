@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings, TupleSections #-}
 
-module Day02 where
+module Day02 (readInput, part1, part2) where
 
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
