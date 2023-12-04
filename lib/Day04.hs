@@ -33,6 +33,7 @@ part1  = show . sum .  map cardValue
 
 
 part2 :: [Card] -> String
-part2 cards = show $ Map.foldr (+) 0 $ foldl (\m -> \c -> updateMap m c) (Map.fromList $ zip [1..(length cards)] $ repeat 1) cards
+part2 cards = show $ Map.foldr (+) 0 $ foldl updateCardCounts (Map.fromList $ zip [1..(length cards)] $ repeat 1) cards
     where
-        updateMap mp (Card i w a) = foldl (\m -> \k -> Map.insertWith (+) k (Map.findWithDefault 1 i mp) m) mp [i + 1..i + (Set.size $ Set.intersection w a)]
+        updateCardCounts m (Card i w a) = foldl (addCards (Map.findWithDefault 1 i m)) m [i + 1..i + (Set.size $ Set.intersection w a)]
+        addCards num m count = Map.insertWith (+) count num m
