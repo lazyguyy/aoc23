@@ -35,13 +35,11 @@ makeSchematic text = Schematic <$> (Set.fromList <$> symbols text) <*> parts tex
 partParser :: Int -> RE (Int, Char) [Part]
 partParser row = many (psym (not . isNumber . snd)) *> many (makePart <$> some (psym (isNumber . snd)) <* many (psym (not . isNumber . snd)))
     where
-        makePart :: [(Int, Char)] -> Part
         makePart cs = Part (map snd cs) row $ fst $ head cs
 
 symbolParser :: Int -> RE (Int, Char) [Symbol]
 symbolParser row = many (psym (not . isValid . snd)) *> many (makeSymbol <$> (psym (isValid . snd)) <* many (psym (not . isValid . snd)))
     where
-        makeSymbol :: (Int, Char) -> Symbol
         makeSymbol (i, c) = Symbol c row i
         isValid c = (not $ isNumber c) && c /= '.'
 
@@ -57,10 +55,9 @@ updateSymbols :: SymbolSet -> Map.Map Coordinate [Int] -> Part -> Map.Map Coordi
 updateSymbols set m part = foldl (\cm -> \k -> Map.insertWith (++) k [read $ num part] cm) m $ filter (\(r, c) -> Set.member (Symbol '.' r c) set) $ adjacency part
 
 part1 :: Schematic -> String
-part1 (Schematic set parts) = show $ sum $ map ((read :: String -> Int) . num) $ filter (covers set) parts
+part1 (Schematic set parts) = show $ sum $ map (read . num) $ filter (covers set) parts
 
 part2 :: Schematic -> String
--- part2 = show
 part2 (Schematic set parts) = show $ sum $ map (product . snd) $ filter ((==2) . length . snd) $ Map.toList $ foldl (updateSymbols possibleGears) Map.empty parts
     where
         possibleGears :: SymbolSet
