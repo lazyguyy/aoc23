@@ -75,7 +75,7 @@ rangeMapping r@(Range f t) mp@(Mapping _ m)
 makeRanges :: [Int] -> [Range]
 makeRanges ns = map makeRange $ keepNth 2 $ zip ns $ tail ns
     where
-        makeRange (x, y) = Range x $ x +y
+        makeRange (x, y) = Range x $ x + y
 
 part2 :: Input -> Int
 part2 (Input seeds mappings) = minimum $ map from $ foldl (\r m -> concat $ map (flip rangeMapping m) r) (makeRanges seeds) mappings
