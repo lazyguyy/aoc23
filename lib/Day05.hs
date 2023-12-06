@@ -3,7 +3,6 @@
 module Day05 where
 
 import qualified Data.Text as T
-import qualified Data.Set as Set
 import qualified Data.Map as Map
 
 import Text.Regex.Applicative
@@ -49,7 +48,7 @@ makeMapping s ts = Mapping s $ foldl insertIntoMap Map.empty ts
 listMapping :: [Int] -> Mapping -> [Int]
 listMapping vs (Mapping _ m) = map transform vs
     where
-        transform v = fromMaybe v $ itemTransform v <$> (fmap snd $ Map.lookupLE v m)
+        transform v = fromMaybe v $ itemTransform v <$> (snd <$> Map.lookupLE v m)
 
 itemTransform :: Int -> Transformation -> Int
 itemTransform v t
@@ -69,8 +68,8 @@ rangeMapping r@(Range f t) mp@(Mapping _ m)
     | f >= t = []
     | otherwise = rangeTransform r actual : rangeMapping (Range (upTo actual) t) mp
     where
-        lower = keepValue (\trf -> src trf + range trf > f) $ fmap snd $ Map.lookupLE f m
-        higher = Transformation f f $ (fromMaybe t $ fmap (src . snd) $ Map.lookupGT f m) - f
+        lower = keepValue (\trf -> src trf + range trf > f) $ snd <$> Map.lookupLE f m
+        higher = Transformation f f $ (fromMaybe t $ (src . snd) <$> Map.lookupGT f m) - f
         actual = fromMaybe higher lower
 
 makeRanges :: [Int] -> [Range]
