@@ -1,3 +1,4 @@
 dist-newstyle/*
+inputs/*
 *.o
 *.hi

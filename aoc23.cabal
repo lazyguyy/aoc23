@@ -46,7 +46,7 @@ maintainer:         17795787+lazyguyy@users.noreply.github.com
 build-type:         Simple
 
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
-extra-doc-files:    CHANGELOG.md
+-- extra-doc-files:    CHANGELOG.md
 
 -- Extra source files to be distributed with the package, such as examples, or a tutorial module.
 -- extra-source-files:
@@ -61,6 +61,7 @@ library aoc23-lib
     -- LANGUAGE extensions used by modules in this package.
     default-extensions: OverloadedStrings
     -- other-extensions:
+
     other-modules:    Llib
 
     -- Other library packages from which modules are imported.
@@ -69,7 +70,11 @@ library aoc23-lib
     -- Directories containing source files.
     hs-source-dirs:   lib
 
+<<<<<<< HEAD
     exposed-modules:  Day01, Day02, Day03, Day04, Day06
+=======
+    exposed-modules:  Day01, Day02, Day03, Day04, Day05
+>>>>>>> 76ed2866c85a62c436087b4f53bf891d2b4cbe2b
 
     -- Base language which the package is written in.
     default-language: Haskell2010
@@ -100,9 +105,14 @@ executable day04
     hs-source-dirs: execs
     default-language: Haskell2010
 
+executable day05
+    main-is: Run05.hs
+    build-depends: base, aoc23-lib, text
+    hs-source-dirs: execs
+    default-language: Haskell2010
+
 executable day06
     main-is: Run06.hs
     build-depends: base, aoc23-lib, text
     hs-source-dirs: execs
     default-language: Haskell2010
-

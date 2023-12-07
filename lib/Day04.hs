@@ -27,7 +27,7 @@ cardParser = Card <$>
 
 
 part1 :: [Card] -> String
-part1  = show . sum .  map cardValue
+part1  = show . sum . map cardValue
     where
         cardValue (Card _ w a) = div (2 ^ (Set.size $ Set.intersection w a)) 2
 
