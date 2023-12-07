@@ -70,11 +70,8 @@ library aoc23-lib
     -- Directories containing source files.
     hs-source-dirs:   lib
 
-<<<<<<< HEAD
-    exposed-modules:  Day01, Day02, Day03, Day04, Day06
-=======
-    exposed-modules:  Day01, Day02, Day03, Day04, Day05
->>>>>>> 76ed2866c85a62c436087b4f53bf891d2b4cbe2b
+    exposed-modules:  Day01, Day02, Day03, Day04, Day05,
+                      Day06
 
     -- Base language which the package is written in.
     default-language: Haskell2010
