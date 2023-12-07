@@ -65,7 +65,7 @@ library aoc23-lib
     other-modules:    Llib
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.16.0.0, text, containers, extra, regex-applicative
+    build-depends:    base ^>=4.16.0.0, text, containers, extra, regex-applicative, sort
 
     -- Directories containing source files.
     hs-source-dirs:   lib
