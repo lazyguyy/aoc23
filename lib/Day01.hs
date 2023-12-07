@@ -4,13 +4,9 @@ module Day01 (readInput, part1, part2) where
 
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
--- import qualified Data.Text.Read as T
-
 
 import Data.Char (digitToInt, isDigit)
 import Data.List.Extra (minimumOn, maximumOn)
-
-
 
 digitStrings :: [T.Text]
 digitStrings = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -26,7 +22,6 @@ lineValue line = (head digits) * 10 + (last digits)
 
 findDigits :: T.Text -> [(Int, Int)]
 findDigits text = concat $ map (\(i, d) -> map ((, mod (i+1) 10) . T.length . fst) $ T.breakOnAll d text) $ zip [0..] digitStrings
-
 
 lineValue2 :: T.Text -> Int
 lineValue2 line = firstDigit * 10 + lastDigit
