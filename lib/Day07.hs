@@ -30,13 +30,13 @@ cardParser = ((toEnum . (subtract 2) . digitToInt) <$> (psym isDigit)) <|>
 handParser :: RE Char Hand
 handParser = Hand <$> (many cardParser <* sym ' ') <*> (read <$> many (psym isDigit))
 
-rankValue :: Hand -> String
-rankValue = concat . map show . reverse . sort . map length . group . sort . cards
+rankValue :: Hand -> [Int]
+rankValue = reverse . sort . map length . group . sort . cards
 
-magicRankValue :: Card -> Hand -> String
-magicRankValue c = concat . map show . reverse . sort . map length . group . sort . replaceItem Jack c . cards
+magicRankValue :: Card -> Hand -> [Int]
+magicRankValue c = reverse . sort . map length . group . sort . replaceItem Jack c . cards
 
-maxMagicRank :: Hand -> String
+maxMagicRank :: Hand -> [Int]
 maxMagicRank hand = maximum . map (flip magicRankValue hand) $ [(minBound :: Card)..(maxBound :: Card)]
 
 part1 :: [Hand] -> String
@@ -47,7 +47,6 @@ part1 = show . sum . zipWith (*) [1..] . map bid . sortBy comp
             | otherwise = compare (rankValue a) $ rankValue b
 
 part2 :: [Hand] -> String
--- part2 = concat . map (show . cards) . sortBy comp
 part2 = show . sum . zipWith (*) [1..] . map bid . sortBy comp
     where
         comp a b
