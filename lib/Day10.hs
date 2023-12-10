@@ -42,10 +42,10 @@ adjacency n@(Network _ _ m) p = filter (inBounds n) $ map (add p) $ connections 
 
 bfs :: Network -> Distances -> [Position] -> Distances
 bfs _ d [] = d
-bfs n d q = bfs n updated $ tail q ++ neighbors
+bfs n d q = bfs n newDistances $ tail q ++ neighbors
     where
         neighbors = filter (not . (flip Map.member d)) $ filter (canReach n $ head q) $ adjacency n $ head q
-        updated = foldl (\m nb -> Map.insert nb (1 + d Map.! (head q)) m) d neighbors
+        newDistances = foldl (\m nb -> Map.insert nb (1 + d Map.! (head q)) m) d neighbors
 
 readInput :: String -> Network
 readInput text = Network (length l) (length $ head l) $ Array.listArray ((1, 1), (length l, length $ head l)) $ concat l
@@ -61,13 +61,11 @@ part1 n = show $ foldr max 0 $ bfs n (Map.fromList [(startPos, 0)]) [startPos]
         startPos = getStartPos n
 
 part2 :: Network -> String
--- part2 n = intercalate "\n" $ chunksOf (cols n) $ Array.elems $ plan $ repairNetwork n
 part2 n = show $ sum $ map (enclosedInRow repaired distances) [1..(rows n)]
     where
         startPos = getStartPos n
         distances = bfs n (Map.fromList [(startPos, 0)]) [startPos]
         repaired = repairNetwork n
-
 
 repairNetwork :: Network -> Network
 repairNetwork n = Network (rows n) (cols n) $ plan n Array.// [(startPos, startTile)]
@@ -77,25 +75,16 @@ repairNetwork n = Network (rows n) (cols n) $ plan n Array.// [(startPos, startT
         startTile = fst $ forceMaybe "No tile fits the start position" $ find (\(_, os) -> length os == 2 && (all (flip elem startAdjacency) $ map (add startPos) os)) $ Map.toList connections
 
 enclosedInRow :: Network -> Distances -> Int -> Int
-enclosedInRow n d row = countEnclosed n d (zip (repeat row) [1..(cols n)]) '.' 0
+enclosedInRow n d row = countEnclosed $ map (\i -> if Map.member i d then plan n Array.! i else '.') $ zip (repeat row) [1..(cols n)]
 
-countEnclosed :: Network -> Distances -> [(Int, Int)] -> Char -> Int -> Int
-countEnclosed  _ _ [] _ _ = 0
-countEnclosed n d (i:is) lastBend pipes
-    | not $ Map.member i d = (mod pipes 2) + countEnclosed n d is lastBend pipes
-    | otherwise            = countEnclosed n d is bendChar totalPipes
+countEnclosed :: [Char] -> Int
+countEnclosed row = length $ filter (\(char, contained) -> char == '.' && contained) $ zip filtered $ scanl checkContained False $ zip filtered $ tail filtered
     where
-        currentChar = plan n Array.! i
-        (bendChar, totalPipes) = case (lastBend, currentChar) of
-            (_, '|')   -> (lastBend, pipes + 1)
-            ('F', 'J') -> ('J', pipes + 1)
-            ('F', '7') -> ('7', pipes)
-            ('L', 'J') -> ('J', pipes)
-            ('L', '7') -> ('J', pipes + 1)
-            (_, 'F')   -> ('F', pipes)
-            (_, 'L')   -> ('L', pipes)
-            (_, _)     -> (lastBend, pipes)
-
+        filtered = filter (/= '-') row
+        checkContained contained ('|', _)   = not contained
+        checkContained contained ('L', '7') = not contained
+        checkContained contained ('F', 'J') = not contained
+        checkContained contained _          = contained
 
 solve :: T.Text -> [String]
 solve text = [part1 network, part2 network]
