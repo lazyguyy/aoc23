@@ -81,10 +81,10 @@ countEnclosed :: [Char] -> Int
 countEnclosed row = length $ filter (\(char, contained) -> char == '.' && contained) $ zip filtered $ scanl checkContained False $ zip filtered $ tail filtered
     where
         filtered = filter (/= '-') row
-        checkContained contained ('|', _)   = not contained
-        checkContained contained ('L', '7') = not contained
-        checkContained contained ('F', 'J') = not contained
-        checkContained contained _          = contained
+        checkContained isInside ('|', _)   = not isInside
+        checkContained isInside ('L', '7') = not isInside
+        checkContained isInside ('F', 'J') = not isInside
+        checkContained isInside _          = isInside
 
 solve :: T.Text -> [String]
 solve text = [part1 network, part2 network]
