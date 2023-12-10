@@ -59,19 +59,19 @@ library aoc23-lib
     import:           warnings
 
     -- LANGUAGE extensions used by modules in this package.
-    default-extensions: OverloadedStrings
+    -- default-extensions: OverloadedStrings
     -- other-extensions:
 
     other-modules:    Llib
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.16.0.0, text, containers, extra, regex-applicative, sort, utility-ht
+    build-depends:    base ^>=4.16.0.0, text, containers, extra, regex-applicative, sort, utility-ht, array
 
     -- Directories containing source files.
     hs-source-dirs:   lib
 
     exposed-modules:  Day01, Day02, Day03, Day04, Day05,
-                      Day06, Day07, Day08, Day09
+                      Day06, Day07, Day08, Day09, Day10
 
     -- Base language which the package is written in.
     default-language: Haskell2010
@@ -128,6 +128,12 @@ executable day08
 
 executable day09
     main-is: Run09.hs
+    build-depends: base, aoc23-lib, text
+    hs-source-dirs: execs
+    default-language: Haskell2010
+
+executable day10
+    main-is: Run10.hs
     build-depends: base, aoc23-lib, text
     hs-source-dirs: execs
     default-language: Haskell2010
