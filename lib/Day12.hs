@@ -24,7 +24,7 @@ data Input = Input {machines :: String, pattern :: [Int]} deriving (Show)
 
 inputParser :: RE Char Input
 inputParser = Input <$> many (psym (not . (==' '))) <* sym ' '
-                        <*> many (read <$> many (psym isDigit) <* optional (sym ','))
+                    <*> many (read <$> many (psym isDigit) <* optional (sym ','))
 
 getNext :: Reconstruction -> Char -> [Reconstruction]
 getNext (Rec seg cur re@(r:_)) '#' = if cur < r then [Rec seg (cur + 1) re] else []
@@ -39,7 +39,6 @@ getNext r _ = getNext r '#' ++ getNext r '.'
 singleStep :: Map.Map Reconstruction Int -> Char -> Map.Map Reconstruction Int
 singleStep occs char = foldl (\m (elmt, count) -> foldl (insertIntoMap count) m $ getNext elmt char) Map.empty $ Map.assocs occs
     where
-        insertIntoMap :: Int -> Map.Map Reconstruction Int -> Reconstruction -> Map.Map Reconstruction Int
         insertIntoMap count m r = Map.insertWith (+) r count m
 
 constructPossibilites :: Input -> Map.Map Reconstruction Int
