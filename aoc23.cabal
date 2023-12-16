@@ -72,7 +72,8 @@ library aoc23-lib
 
     exposed-modules:  Day01, Day02, Day03, Day04, Day05,
                       Day06, Day07, Day08, Day09, Day10,
-                      Day11, Day12, Day13, Day14, Day15
+                      Day11, Day12, Day13, Day14, Day15,
+                      Day16
 
     -- Base language which the package is written in.
     default-language: Haskell2010
@@ -165,6 +166,12 @@ executable day14
 
 executable day15
     main-is: Run15.hs
+    build-depends: base, aoc23-lib, text
+    hs-source-dirs: execs
+    default-language: Haskell2010
+
+executable day16
+    main-is: Run16.hs
     build-depends: base, aoc23-lib, text
     hs-source-dirs: execs
     default-language: Haskell2010

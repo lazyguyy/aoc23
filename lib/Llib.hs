@@ -1,7 +1,8 @@
-module Llib where
+module Llib (keepValue, forceMaybe, fromJust, keepNth, replaceItem, aocBlockInput, aocArrayShow, arrayByRow, findIndex, bfs) where
 
 import qualified Data.Array as Array
 import qualified Data.Text as T
+import qualified Data.Map as Map
 
 import Data.List (intercalate)
 import Data.List.Extra (chunksOf)
@@ -49,3 +50,15 @@ findIndex _ [] = Nothing
 findIndex f (a:as) = case f a of
     True -> pure 0
     False -> (+1) <$> findIndex f as
+
+bfs :: Ord a => [a] -> (a -> [a]) -> Map.Map a Int
+bfs start getNext = innerbfs (Map.fromList $ zip start $ repeat 0) getNext start
+
+innerbfs :: Ord a => Map.Map a Int -> (a -> [a]) -> [a] -> Map.Map a Int
+innerbfs distances _ [] = distances
+innerbfs distances getNext queue = innerbfs newDistances getNext $ tail queue ++ neighbors
+    where
+        current = head queue
+        currentDistance = distances Map.! current
+        neighbors = filter (not . (flip Map.member distances)) $ getNext $ current
+        newDistances = foldl (\dists neighbor -> Map.insert neighbor (1 + currentDistance) dists) distances neighbors
